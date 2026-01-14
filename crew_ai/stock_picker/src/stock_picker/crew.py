@@ -5,11 +5,12 @@ from crewai_tools import SerperDevTool
 from posthog import api_key
 from pydantic import BaseModel, Field
 from typing import List
-from fordllm.utils import TokenFetcher
 from .tools.push_tool import PushNotificationTool
+from .helper_utils import base_url, api_key
 from crewai.memory import LongTermMemory, ShortTermMemory, EntityMemory
 from crewai.memory.storage.rag_storage import RAGStorage
 from crewai.memory.storage.ltm_sqlite_storage import LTMSQLiteStorage
+
 
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
@@ -51,10 +52,7 @@ class StockPicker():
     
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
-    
-    token_fetcher = TokenFetcher()
-    base_url = "https://api.pivpn.core.ford.com/fordllmapi/api/v1"
-    api_key = token_fetcher.token
+
     
     # Create LLM instance directly instead of using string from config
     llm_instance = LLM(
@@ -106,8 +104,8 @@ class StockPicker():
         """Creates the StockPicker crew"""
         
         llm_instance = LLM(
-            base_url=self.base_url,
-            api_key=self.api_key,
+            base_url=base_url,
+            api_key=api_key,
             model="gpt-5"
         )
 
@@ -142,7 +140,7 @@ class StockPicker():
                         type="short_term",
                         path="./memory/"
                     )
-                ),            # Entity memory for tracking key information about entities
+                ), # Entity memory for tracking key information about entities
             entity_memory = EntityMemory(
                 storage=RAGStorage(
                     embedder_config={
