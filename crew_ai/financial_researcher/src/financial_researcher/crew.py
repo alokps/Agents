@@ -2,7 +2,7 @@
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
-from fordllm.utils import TokenFetcher
+from .helper_utils import base_url, api_key
 
 @CrewBase
 class ResearchCrew():
@@ -10,9 +10,7 @@ class ResearchCrew():
     
     agents_config = 'config/agents.yaml'
     tasks_config = 'config/tasks.yaml'
-    token_fetcher = TokenFetcher()
-    base_url = "https://api.pivpn.core.ford.com/fordllmapi/api/v1"
-    api_key = token_fetcher.token
+
     
     # Create LLM instance directly instead of using string from config
     llm_instance = LLM(
