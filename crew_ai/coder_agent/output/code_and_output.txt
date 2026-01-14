@@ -1,0 +1,39 @@
+Text file content (code and its output)
+
+Plan:
+- Generate the first 100 terms of the series t_n = 1/n^2 for n = 1..100.
+- Sum these terms.
+- Compute the average as total_sum / 100.
+- Use Decimal with high precision to ensure stable, reproducible results.
+- Print the average to 18 decimal places.
+
+Python code:
+#!/usr/bin/env python3
+from decimal import Decimal, getcontext
+
+def main():
+    # Plan:
+    # 1) Set high precision for Decimal arithmetic.
+    # 2) Compute total = sum(1/n^2 for n in 1..100).
+    # 3) average = total / 100.
+    # 4) Print the result with 18 decimal places.
+    getcontext().prec = 50
+
+    N = 100
+    one = Decimal(1)
+    total = Decimal(0)
+
+    for n in range(1, N + 1):
+        d = Decimal(n)
+        total += one / (d * d)
+
+    average = total / Decimal(N)
+
+    # Output the average with a fixed number of decimal places
+    print(f"Average of the first {N} terms of 1/n^2: {average:.18f}")
+
+if __name__ == "__main__":
+    main()
+
+Output:
+Average of the first 100 terms of 1/n^2: 0.016349839001848931

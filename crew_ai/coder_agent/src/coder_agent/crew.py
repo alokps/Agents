@@ -2,13 +2,18 @@ from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
+from .helper_utils import base_url, api_key
+
 # If you want to run a snippet of code before or after the crew starts,
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
 
 llm_instance = LLM(
-    
+    base_url=base_url,
+    api_key=api_key,
+    model="gpt-5",
 )
+
 
 @CrewBase
 class CoderAgent():
@@ -28,14 +33,16 @@ class CoderAgent():
         return Agent(
             config=self.agents_config['coder'], # type: ignore[index]
             verbose=True,
+            llm=llm_instance,
+            # Following Config is used to run the agent with docker
             allow_code_execution=True,
             code_execution_mode='safe',
-            code_interpreter="podman",
+            code_interpreter="docker",
             code_interpreter_config={
                 "image": "python:3.11-slim",
                 "command": "python"
             },
-            max_execution_time=30,
+            max_execution_time=100,
             max_retry_limit=5
         )
 
