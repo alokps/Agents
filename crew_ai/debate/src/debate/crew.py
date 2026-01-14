@@ -1,7 +1,6 @@
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
-from fordllm.utils import TokenFetcher
-
+from .helper_utils import base_url, api_key
 
 @CrewBase
 class Debate():
@@ -10,36 +9,34 @@ class Debate():
 
     agents_config = 'config/agents.yaml'
     tasks_config = 'config/tasks.yaml'
-    token_fetcher = TokenFetcher()
-    base_url = "https://api.pivpn.core.ford.com/fordllmapi/api/v1"
-    api_key = token_fetcher.token
+    
+    llm_instance = LLM(
+            base_url=base_url,
+            api_key=api_key,
+            model="gpt-5"
+        )
 
     @agent
     def debater(self) -> Agent:
         # Create LLM instance directly instead of using string from config
-        llm_instance = LLM(
-            base_url=self.base_url,
-            api_key=self.api_key,
-            model="gpt-5-mini"
-        )
+        
+        self.llm_instance.model = "gpt-5-mini"
         
         return Agent(
             config=self.agents_config['debater'],
-            llm=llm_instance,
+            llm=self.llm_instance,
             verbose=True
         )
 
     @agent
     def judge(self) -> Agent:
         # Create LLM instance directly instead of using string from config
-        llm_instance = LLM(
-            base_url=self.base_url,
-            api_key=self.api_key,
-            model="gpt-5",
-        )
+        
+        self.llm_instance.model = "gpt-5"
+        
         return Agent(
             config=self.agents_config['judge'],
-            llm=llm_instance,
+            llm=self.llm_instance,
             verbose=True
         )
 
