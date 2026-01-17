@@ -57,6 +57,11 @@ You write witty, engaging cold emails that are likely to get a response."
         self._sales_agent_3_instructions = "You are a busy sales agent working for ComplAI, \
 a company that provides a SaaS tool for ensuring SOC2 compliance and preparing for audits, powered by AI. \
 You write concise, to the point cold emails."
+        self._sales_email_picker_instructions = "You pick the best cold sales email from the given options. \
+Imagine you are a customer and pick the one you are most likely to respond to. \
+Do not give an explanation; reply with the selected email only."
+        self._email_output = []
+
         self._sales_agent_1 = Agent(
             name="Professional Sales Agent",
             instructions=self._sales_agent_1_instructions,
@@ -66,6 +71,10 @@ You write concise, to the point cold emails."
         )
         self._sales_agent_3 = Agent(
             name="Concise Sales Agent", instructions=self._sales_agent_3_instructions
+        )
+        self._sales_email_picker = Agent(
+            name="Sales Email Picker Agent",
+            instructions=self._sales_email_picker_instructions,
         )
 
     async def run_single_agent(
@@ -89,11 +98,22 @@ You write concise, to the point cold emails."
 
         outputs = [result.final_output for result in results]
 
+        self._email_output.extend(outputs)
+
         async with aiofiles.open(
             "outputs/sales_agent_outputs.txt", "w", encoding="utf-8"
         ) as f:
             for output in outputs:
                 await f.write(output + "\n\n")
+
+    async def best_email_picker(self, run_config: RunConfig) -> str:
+        emails = "Cold sales emails:\n\n" + "\n\nEmail:\n\n".join(self._email_output)
+        best_email_result = await Runner.run(
+            starting_agent=self._sales_email_picker,
+            input=emails,
+            run_config=run_config,
+        )
+        print(f"\n\nBest Sales Email:\n\n{best_email_result.final_output}")
 
 
 class SimpleSalesAgentSystem:
@@ -128,7 +148,12 @@ class SimpleSalesAgentSystem:
             input=sales_input, run_config=self._run_config
         )
 
+    async def pick_best_email(self):
+        await self.run_all_sales_agents()
+        print("\n--- Picking Best Sales Email ---\n")
+        await self._sales_workflow.best_email_picker(run_config=self._run_config)
+
 
 if __name__ == "__main__":
     sales_agent_system = SimpleSalesAgentSystem()
-    asyncio.run(sales_agent_system.run_all_sales_agents())
+    asyncio.run(sales_agent_system.pick_best_email())
