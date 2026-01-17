@@ -1,0 +1,10 @@
+[project]
+name = "open-ai-agents"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cachetools>=6.2.4",
+    "openai-agents>=0.6.7",
+]
