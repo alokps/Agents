@@ -1,0 +1,64 @@
+Subject: Faster SOC 2 readiness for [Company] — automated, audit-ready, AI-powered
+
+Hi [CTO Name],
+
+When you’re balancing product velocity with growing security and compliance demands, SOC 2 prep can quickly become a full-time distraction. At ComplAI we help mid‑market tech companies cut the time and uncertainty around SOC 2 readiness and audits by automating evidence collection, controls mapping, and auditor‑ready reporting — powered by AI.
+
+A few ways ComplAI helps teams like yours:
+- Automated evidence collection and continuous monitoring across cloud and dev tools (AWS/GCP, GitHub, Okta, Slack, etc.).
+- AI-driven gap analysis and prioritized remediation steps so engineering and security focus on what matters.
+- One-click, auditor-ready reports and documentation to shorten review cycles and reduce back-and-forth.
+
+If you’re planning a Type I or Type II audit (or want continuous SOC 2 assurance), I can show how ComplAI typically reduces prep overhead and speeds auditor handoffs without adding headcount.
+
+Are you available for a 15-minute demo next week? I’m free Tuesday 10–11am or Wednesday 2–3pm — if those don’t work, tell me a better time and I’ll send a calendar invite.
+
+Thanks for your time,
+[Your Name]
+Sales, ComplAI
+[email@example.com] | (555) 555-5555
+complai.com
+
+Subject: Make SOC2 audits suck less — 15-minute readiness scan?
+
+Hi [FirstName],
+
+Quick one — is SOC2 still your team’s favorite recurring party-crasher? (No prizes for guessing the answer.)
+
+I’m [Your Name] at ComplAI. We built an AI-powered SOC2 platform that turns audit panic into paint-by-numbers: automated evidence collection, continuous control monitoring, and audit-ready reports you can hand an auditor without a guilt trip.
+
+What we do for mid-sized tech orgs:
+- Auto-collect evidence from AWS/GCP/Azure, GitHub, Jira, Okta, SSO, logs, etc.
+- Continuous drift detection + alerts so controls don’t quietly fail
+- AI-driven control mapping and policy templates to cut manual work
+- One-click audit bundles that auditors actually like
+
+Customers like yours tell us they go from weeks of prep to days, and shave hours off auditor time — which usually means fewer all-hands about “where are the PDFs.”
+
+If you’re open, I’ll run a free, no-install SOC2 readiness scan for your environment and send the results — 10–15 minutes to set up, zero commitment. I’m free Tue 10–11am PT or Thu 2–3pm PT — which works, or tell me a better time.
+
+Cheers,
+[Your Name]
+Sales Lead, ComplAI
+[phone] | [email] | Calendly: [link]
+
+Subject: Cut SOC 2 prep from months to days — 15‑minute demo?
+
+Hi [CTO Name],
+
+You’re balancing product delivery and SOC 2 readiness — ComplAI helps take the audit work off your team.
+
+Our AI-powered platform:
+- Automatically maps controls to your stack (Okta, AWS, GitHub, Slack, G Suite, etc.)
+- Collects auditor-ready evidence and generates policies and remediation steps
+- Runs continuous readiness checks so you’re audit-ready, not scrambling
+
+We’ve helped mid-market SaaS teams shift SOC 2 prep from a months‑long drain to an engineer-minimal process.
+
+If you’ve got 15 minutes, I’ll show a short demo and a free readiness snapshot. Tue 11am or Thu 2pm (PST) work for me — which do you prefer?
+
+Best,
+[Your Name]  
+Sales, ComplAI  
+[phone] | [calendly link]
+
