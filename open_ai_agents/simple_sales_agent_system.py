@@ -7,6 +7,7 @@ from agents import (
     RunConfig,
     OpenAIChatCompletionsModel,
     set_tracing_disabled,
+    function_tool,
 )
 from openai.types.responses import ResponseTextDeltaEvent
 from openai import AsyncOpenAI
@@ -30,6 +31,14 @@ def send_test_email(subject: str, content: str) -> int:
     mail = Mail(from_email, to_email, subject, content).get()
     response = sg.client.mail.send.post(request_body=mail)
     return response.status_code
+
+
+@function_tool
+def send_email() -> int:
+    return send_test_email(
+        "Send Sales Email",
+        "This is a sales email sent to clients.",
+    )
 
 
 set_tracing_disabled(disabled=True)
@@ -61,19 +70,20 @@ You write concise, to the point cold emails."
 Imagine you are a customer and pick the one you are most likely to respond to. \
 Do not give an explanation; reply with the selected email only."
         self._email_output = []
+        self._best_email_output = ""
 
         self._sales_agent_1 = Agent(
-            name="Professional Sales Agent",
+            name="professional_sales_agent",
             instructions=self._sales_agent_1_instructions,
         )
         self._sales_agent_2 = Agent(
-            name="Humorous Sales Agent", instructions=self._sales_agent_2_instructions
+            name="humorous_sales_agent", instructions=self._sales_agent_2_instructions
         )
         self._sales_agent_3 = Agent(
-            name="Concise Sales Agent", instructions=self._sales_agent_3_instructions
+            name="concise_sales_agent", instructions=self._sales_agent_3_instructions
         )
         self._sales_email_picker = Agent(
-            name="Sales Email Picker Agent",
+            name="sales_email_picker",
             instructions=self._sales_email_picker_instructions,
         )
 
@@ -113,7 +123,40 @@ Do not give an explanation; reply with the selected email only."
             input=emails,
             run_config=run_config,
         )
+        self._best_email_output = best_email_result.final_output
         print(f"\n\nBest Sales Email:\n\n{best_email_result.final_output}")
+
+
+class SalesManager:
+    def __init__(self):
+        self.tools = []
+        self._sales_manager_instructions = """
+You are a Sales Manager at ComplAI. Your goal is to find the single best cold sales email using the sales_agent tools.
+ 
+Follow these steps carefully:
+1. Generate Drafts: Use all three sales_agent tools to generate three different email drafts. Do not proceed until all three drafts are ready.
+ 
+2. Evaluate and Select: Review the drafts and choose the single best email using your judgment of which one is most effective.
+ 
+3. Use the send_email tool to send the best email (and only the best email) to the user.
+ 
+Crucial Rules:
+- You must use the sales agent tools to generate the drafts — do not write them yourself.
+- You must send ONE email using the send_email tool — never more than one.
+"""
+        self._sales_manager_agent = Agent(
+            name="Sales Manager Agent",
+            instructions=self._sales_manager_instructions,
+            tools=self.tools,
+        )
+
+    async def run_manager(self, input: str, run_config: RunConfig):
+        result = await Runner.run(
+            starting_agent=self._sales_manager_agent,
+            input=input,
+            run_config=run_config,
+        )
+        print(f"\n\nSales Manager Result:\n\n{result.final_output}")
 
 
 class SimpleSalesAgentSystem:
@@ -156,4 +199,15 @@ class SimpleSalesAgentSystem:
 
 if __name__ == "__main__":
     sales_agent_system = SimpleSalesAgentSystem()
-    asyncio.run(sales_agent_system.pick_best_email())
+    sales_manager = SalesManager()
+    sales_manager.tools.extend(
+        [
+            send_email,
+        ]
+    )
+    asyncio.run(
+        sales_manager.run_manager(
+            input=sales_agent_system._sales_workflow._best_email_output,
+            run_config=sales_agent_system._run_config,
+        )
+    )
