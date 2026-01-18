@@ -221,10 +221,10 @@ Crucial Rules:
             run_config=run_config,
         )
         async with aiofiles.open(
-            "outputs/sales_manager_outputs.txt", "w", encoding="utf-8"
+            "outputs/sales_manager_tools_outputs.txt", "w", encoding="utf-8"
         ) as f:
                 await f.write(result.final_output + "\n\n")
-                print("\n\nOutput is placed in outputs/sales_manager_outputs.txt\n\n")
+                print("\n\nOutput is placed in outputs/sales_manager_tools_outputs.txt\n\n")
 
     
     async def run_handoff_manager(self, input: str,
@@ -285,7 +285,7 @@ class SimpleSalesAgentSystem:
 
 if __name__ == "__main__":
     sales_agent_system = SimpleSalesAgentSystem()
-    sales_manager = SalesManager(with_handsoff=True)
+    sales_manager = SalesManager(with_handsoff=False)
     description = "Write a cold sales email"
     if not sales_manager.with_handsoff:
         sales_manager.tools.extend(
