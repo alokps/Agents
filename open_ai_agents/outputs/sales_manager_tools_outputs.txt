@@ -1,0 +1,15 @@
+Email sent to "Dear CEO":
+
+Dear CEO,
+
+I’m the Sales Manager at ComplAI. We help companies streamline SOC 2 and ongoing compliance with an AI-driven platform that automates policy monitoring, evidence collection, and audit preparation—integrating with your existing stack (Slack, Jira, Okta, AWS) to deliver real-time risk dashboards and audit-ready reports.
+
+Many customers see up to a 60% reduction in time spent on compliance tasks. We currently work with mid-market finance and SaaS customers who rely on ComplAI to lower audit overhead and speed remediation.
+
+Would you be available for a 20-minute introductory call to see if this could help your team? Please pick a time on my calendar: [Calendar Link]
+
+Best regards,
+[Your Name]
+Sales Manager, ComplAI
+[Calendar Link]
+
