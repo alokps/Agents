@@ -8,11 +8,15 @@ from agents import (
     OpenAIChatCompletionsModel,
     set_tracing_disabled,
     function_tool,
+    input_guardrail,
+    GuardrailFunctionOutput,
 )
+from agents.exceptions import InputGuardrailTripwireTriggered
 from openai.types.responses import ResponseTextDeltaEvent
 from openai import AsyncOpenAI
 import sendgrid
 import os
+from pydantic import BaseModel
 from sendgrid.helpers.mail import Mail, Email, To, Content
 from helper_utils import base_url, api_key
 from typing import List
@@ -57,11 +61,15 @@ def send_html_email() -> int:
 set_tracing_disabled(disabled=True)
 
 
+class NameCheckOutput(BaseModel):
+    is_name_in_message: bool
+    name: str
+
+
 class CustomModelProvider(ModelProvider):
     global current_model_name
 
     def get_model(self, model_name: str | None) -> Model:
-        print(f"CustomModelProvider: Using model {current_model_name}")
         return OpenAIChatCompletionsModel(
             model=current_model_name,
             openai_client=AsyncOpenAI(base_url=base_url, api_key=api_key),
@@ -115,6 +123,30 @@ Finally, you use the send_html_email tool to send the email with the subject and
         self._html_email_converter = Agent(
             name="html_email_converter", instructions=self._html_email_instructions
         )
+        self._guardrail_agent = Agent(
+            name="Agent which checks for name presence in message",
+            instructions="Check if the user is including someone's personal name in what they want you to do.",
+            output_type=NameCheckOutput,
+        )
+        
+        # Create the guardrail function as an instance attribute
+        @input_guardrail
+        async def guardrail_against_names_in_message(
+            ctx, agent, input
+        ) -> GuardrailFunctionOutput:
+            result = await Runner.run(
+                starting_agent=self._guardrail_agent,
+                input=input,
+                run_config=RunConfig(model_provider=CustomModelProvider()),
+                context=ctx.context,
+            )
+            # result.final_output is already a NameCheckOutput object, not JSON
+            is_name_in_message = result.final_output.is_name_in_message
+            return GuardrailFunctionOutput(
+                output_info={"found_name": str(result.final_output)},
+                tripwire_triggered=is_name_in_message)
+        
+        self.guardrail_against_names_in_message = guardrail_against_names_in_message
 
     async def run_single_agent(
         self, agent: Agent, input: str, run_config: RunConfig
@@ -238,10 +270,11 @@ Crucial Rules:
             print("\n\nOutput is placed in outputs/sales_manager_tools_outputs.txt\n\n")
 
     async def run_handoff_manager(
-        self, input: str, run_config: RunConfig, tools: List, handoffs: List
+        self, input: str, run_config: RunConfig, tools: List, handoffs: List, guardrails: List
     ):
         self.tools = tools
         self.handsoff = handoffs
+        self._sales_manager_handoff_agent.input_guardrails = guardrails
         result = await Runner.run(
             starting_agent=self._sales_manager_handoff_agent,
             input=input,
@@ -349,13 +382,18 @@ gpt-5-mini, claude-sonnet-4-5, gemini-2.5-pro: "
         )
         sales_manager.handsoff = [sales_agent_system._sales_workflow._email_agent]
         message = message = (
-            "Send out a cold sales email addressed to Dear CEO from Alice"
+            "Send out a cold sales email addressed to 'Dear CEO'"
         )
-        asyncio.run(
-            sales_manager.run_handoff_manager(
-                input=message,
-                run_config=sales_agent_system._run_config,
-                tools=sales_manager.tools,
-                handoffs=sales_manager.handsoff,
+        try:
+            asyncio.run(
+                sales_manager.run_handoff_manager(
+                    input=message,
+                    run_config=sales_agent_system._run_config,
+                    tools=sales_manager.tools,
+                    handoffs=sales_manager.handsoff,
+                    guardrails=[sales_agent_system._sales_workflow.guardrail_against_names_in_message],
+                )
             )
-        )
+        except InputGuardrailTripwireTriggered as e:
+            print(f"Guardrail triggered: {e.guardrail_result.output}")
+        
