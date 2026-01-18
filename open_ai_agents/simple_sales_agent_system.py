@@ -200,14 +200,31 @@ class SimpleSalesAgentSystem:
 if __name__ == "__main__":
     sales_agent_system = SimpleSalesAgentSystem()
     sales_manager = SalesManager()
+    description = "Write a cold sales email"
     sales_manager.tools.extend(
         [
+            sales_agent_system._sales_workflow._sales_agent_1.as_tool(
+                tool_name="professional_sales_agent",
+                tool_description=description,
+                run_config=sales_agent_system._run_config,
+            ),
+            sales_agent_system._sales_workflow._sales_agent_2.as_tool(
+                tool_name="humorous_sales_agent",
+                tool_description=description,
+                run_config=sales_agent_system._run_config,
+            ),
+            sales_agent_system._sales_workflow._sales_agent_3.as_tool(
+                tool_name="concise_sales_agent",
+                tool_description=description,
+                run_config=sales_agent_system._run_config,
+            ),
             send_email,
         ]
     )
+    message = "Send a cold sales email addressed to 'Dear CEO'"
     asyncio.run(
         sales_manager.run_manager(
-            input=sales_agent_system._sales_workflow._best_email_output,
+            input=message,
             run_config=sales_agent_system._run_config,
         )
     )
