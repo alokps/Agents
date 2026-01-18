@@ -24,8 +24,9 @@ import aiofiles
 load_dotenv(override=True)
 
 
-def send_test_email(subject: str, content: str, content_type: str ="text/plain") -> int:
-def send_test_email(subject: str, content: str, content_type: str ="text/plain") -> int:
+def send_test_email(
+    subject: str, content: str, content_type: str = "text/plain"
+) -> int:
     sg = sendgrid.SendGridAPIClient(api_key=os.getenv("SENDGRID_API_KEY"))
     from_email = Email(os.getenv("FROM_EMAIL"))
     to_email = To(os.getenv("TO_EMAIL"))
@@ -41,6 +42,7 @@ def send_email() -> int:
         "Send plain Sales Email",
         "This is a Plain sales email sent to clients.",
     )
+
 
 @function_tool
 def send_html_email() -> int:
@@ -107,10 +109,11 @@ Finally, you use the send_html_email tool to send the email with the subject and
             instructions=self._sales_email_picker_instructions,
         )
         self._subject_writer = Agent(
-            name="subject_writer", instructions=self._subject_instructions)
+            name="subject_writer", instructions=self._subject_instructions
+        )
         self._html_email_converter = Agent(
-            name="html_email_converter", instructions=self._html_email_instructions)
-        
+            name="html_email_converter", instructions=self._html_email_instructions
+        )
 
     async def run_single_agent(
         self, agent: Agent, input: str, run_config: RunConfig
@@ -150,23 +153,29 @@ Finally, you use the send_html_email tool to send the email with the subject and
         )
         self._best_email_output = best_email_result.final_output
         print(f"\n\nBest Sales Email:\n\n{best_email_result.final_output}")
-    
+
     def add_tools(self, run_config: RunConfig) -> str:
-        self._tools.extend([
-            self._subject_writer.as_tool(
-                            tool_name="subject_writer",
-                            tool_description="Writes a subject for a cold sales email given the email body.",
-                            run_config=run_config),
-            self._html_email_converter.as_tool(
-                            tool_name="html_email_converter",
-                            tool_description="Converts a text email body to an HTML email body.",
-                            run_config=run_config),
-                            send_html_email
-                           ])
+        self._tools.extend(
+            [
+                self._subject_writer.as_tool(
+                    tool_name="subject_writer",
+                    tool_description="Writes a subject for a cold sales email given the email body.",
+                    run_config=run_config,
+                ),
+                self._html_email_converter.as_tool(
+                    tool_name="html_email_converter",
+                    tool_description="Converts a text email body to an HTML email body.",
+                    run_config=run_config,
+                ),
+                send_html_email,
+            ]
+        )
         self._email_agent = Agent(
-            name="email_formatter_sender", instructions=self._email_formatter_instructions,
+            name="email_formatter_sender",
+            instructions=self._email_formatter_instructions,
             tools=self._tools,
-            handoff_description="Formats and sends the email using the provided tools.")
+            handoff_description="Formats and sends the email using the provided tools.",
+        )
 
 
 class SalesManager:
@@ -224,14 +233,12 @@ Crucial Rules:
         async with aiofiles.open(
             "outputs/sales_manager_tools_outputs.txt", "w", encoding="utf-8"
         ) as f:
-                await f.write(result.final_output + "\n\n")
-                print("\n\nOutput is placed in outputs/sales_manager_tools_outputs.txt\n\n")
+            await f.write(result.final_output + "\n\n")
+            print("\n\nOutput is placed in outputs/sales_manager_tools_outputs.txt\n\n")
 
-    
-    async def run_handoff_manager(self, input: str,
-                                  run_config: RunConfig,
-                                  tools: List,
-                                  handoffs: List):
+    async def run_handoff_manager(
+        self, input: str, run_config: RunConfig, tools: List, handoffs: List
+    ):
         self.tools = tools
         self.handsoff = handoffs
         result = await Runner.run(
@@ -242,8 +249,10 @@ Crucial Rules:
         async with aiofiles.open(
             "outputs/sales_manager_handoff_outputs.txt", "w", encoding="utf-8"
         ) as f:
-                await f.write(result.final_output + "\n\n")
-                print("\n\nOutput is placed in outputs/sales_manager_handoff_outputs.txt\n\n")
+            await f.write(result.final_output + "\n\n")
+            print(
+                "\n\nOutput is placed in outputs/sales_manager_handoff_outputs.txt\n\n"
+            )
 
 
 class SimpleSalesAgentSystem:
@@ -285,8 +294,13 @@ class SimpleSalesAgentSystem:
 
 
 if __name__ == "__main__":
+    handsoff_flag = (
+        input("Do you want to run the Sales Manager with handsoff? (yes/no): ")
+        .strip()
+        .lower()
+    )
     sales_agent_system = SimpleSalesAgentSystem()
-    sales_manager = SalesManager(with_handsoff=False)
+    sales_manager = SalesManager(with_handsoff=(handsoff_flag == "yes"))
     description = "Write a cold sales email"
     if not sales_manager.with_handsoff:
         sales_manager.tools.extend(
@@ -318,9 +332,12 @@ if __name__ == "__main__":
         )
     else:
         sales_manager.tools = sales_agent_system._sales_workflow.add_tools(
-            run_config=sales_agent_system._run_config)
+            run_config=sales_agent_system._run_config
+        )
         sales_manager.handsoff = [sales_agent_system._sales_workflow._email_agent]
-        message = message = "Send out a cold sales email addressed to Dear CEO from Alice"
+        message = message = (
+            "Send out a cold sales email addressed to Dear CEO from Alice"
+        )
         asyncio.run(
             sales_manager.run_handoff_manager(
                 input=message,
