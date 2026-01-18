@@ -25,7 +25,6 @@ load_dotenv(override=True)
 
 current_model_name = "gpt-5-mini"
 
-
 def send_test_email(
     subject: str, content: str, content_type: str = "text/plain"
 ) -> int:
