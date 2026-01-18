@@ -25,6 +25,7 @@ load_dotenv(override=True)
 
 
 def send_test_email(subject: str, content: str, content_type: str ="text/plain") -> int:
+def send_test_email(subject: str, content: str, content_type: str ="text/plain") -> int:
     sg = sendgrid.SendGridAPIClient(api_key=os.getenv("SENDGRID_API_KEY"))
     from_email = Email(os.getenv("FROM_EMAIL"))
     to_email = To(os.getenv("TO_EMAIL"))
