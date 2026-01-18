@@ -23,6 +23,8 @@ import aiofiles
 # Load environment variables from .env file
 load_dotenv(override=True)
 
+current_model_name = "gpt-5-mini"
+
 
 def send_test_email(
     subject: str, content: str, content_type: str = "text/plain"
@@ -57,14 +59,14 @@ set_tracing_disabled(disabled=True)
 
 
 class CustomModelProvider(ModelProvider):
+    global current_model_name
+
     def get_model(self, model_name: str | None) -> Model:
+        print(f"CustomModelProvider: Using model {current_model_name}")
         return OpenAIChatCompletionsModel(
-            model="gpt-5-mini",
+            model=current_model_name,
             openai_client=AsyncOpenAI(base_url=base_url, api_key=api_key),
         )
-
-
-model_provider = CustomModelProvider()
 
 
 class SalesAgentWorkflow:
@@ -294,6 +296,18 @@ class SimpleSalesAgentSystem:
 
 
 if __name__ == "__main__":
+    current_model_name = (
+        input(
+            "Enter the model name to use from the following options (default: gpt-5-mini):\
+gpt-5-mini, claude-sonnet-4-5, gemini-2.5-pro: "
+        )
+        .strip()
+        .lower()
+    )
+    current_model_name = str(current_model_name)
+    if not current_model_name:
+        current_model_name = "gpt-5-mini"
+    print(f"Using model: {current_model_name}")
     handsoff_flag = (
         input("Do you want to run the Sales Manager with handsoff? (yes/no): ")
         .strip()
