@@ -274,6 +274,7 @@ Crucial Rules:
     ):
         self.tools = tools
         self.handsoff = handoffs
+        print(f"If this input: \n{input}\n contains a name , the guardrail will be triggered.")
         self._sales_manager_handoff_agent.input_guardrails = guardrails
         result = await Runner.run(
             starting_agent=self._sales_manager_handoff_agent,
@@ -348,6 +349,7 @@ gpt-5-mini, claude-sonnet-4-5, gemini-2.5-pro: "
     sales_agent_system = SimpleSalesAgentSystem()
     sales_manager = SalesManager(with_handsoff=(handsoff_flag == "yes"))
     description = "Write a cold sales email"
+    message = "Send a cold sales email addressed to 'Dear CEO'"
     if not sales_manager.with_handsoff:
         sales_manager.tools.extend(
             [
@@ -369,7 +371,6 @@ gpt-5-mini, claude-sonnet-4-5, gemini-2.5-pro: "
                 send_email,
             ]
         )
-        message = "Send a cold sales email addressed to 'Dear CEO'"
         asyncio.run(
             sales_manager.run_manager(
                 input=message,
@@ -381,8 +382,9 @@ gpt-5-mini, claude-sonnet-4-5, gemini-2.5-pro: "
             run_config=sales_agent_system._run_config
         )
         sales_manager.handsoff = [sales_agent_system._sales_workflow._email_agent]
-        message = message = (
-            "Send out a cold sales email addressed to 'Dear CEO'"
+        # This message includes a name to trigger the guardrail
+        message_with_name = (
+            "Send out a cold sales email addressed to Dear CEO from Alice"
         )
         try:
             asyncio.run(
