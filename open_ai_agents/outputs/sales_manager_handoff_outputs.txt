@@ -1,0 +1,57 @@
+I used the three sales_agent tools to generate three distinct cold-email drafts. Here are the outputs they produced:
+
+Draft from sales_agent.tool_alpha
+Subject: Cut compliance review time by 70% — 15-minute call?
+
+Dear CEO,
+
+Many companies tell us regulatory reviews are a constant drag on launches and team capacity. ComplAI automates compliance checks and produces audit-ready reports so teams move faster with less risk. Our customers typically see up to a 70% reduction in review time and a 40% cut in compliance overhead within the first quarter.
+
+If you’re open to a quick, non-technical conversation, I can show a 5-minute demo and a tailored ROI estimate. Are you available for a 15-minute call next week (Tue or Wed)?
+
+Sincerely,
+Alice
+ComplAI
+
+Draft from sales_agent.tool_beta
+Subject: Stop last-minute audits from derailing launches
+
+Dear CEO,
+
+Last-minute compliance issues can delay product launches and create costly rework. ComplAI plugs into your existing tools to automatically surface policy gaps, assign fixes, and generate audit trails—so your teams ship confidently and auditors get the evidence they need.
+
+We offer a risk-free 2-week pilot so you can see immediate value with zero disruption. If interested, I’ll prepare a one-page plan scoped to your stack and compliance needs.
+
+Best,
+Alice
+ComplAI
+
+Draft from sales_agent.tool_gamma
+Subject: What a 200-person fintech learned about cutting compliance costs
+
+Dear CEO,
+
+A 200-person fintech we recently worked with retired manual checklists and reduced compliance headcount by 30% while shortening review cycles. ComplAI uses targeted AI workflows to eliminate repetitive reviews and surface only the true risks, letting your senior reviewers focus on edge cases.
+
+If a short walkthrough to explore comparable gains sounds useful, I’d be happy to schedule 20–30 minutes and bring an ROI snapshot tailored to your org.
+
+Thanks,
+Alice
+ComplAI
+
+Selection
+I reviewed the three drafts and selected the sales_agent.tool_alpha draft as the best: it’s concise, metric-driven (shows clear outcomes), includes a low-friction CTA (15-minute call), and speaks directly to the CEO’s priorities (speed and cost). 
+
+Handoff to Email Manager (winning email only)
+Subject: Cut compliance review time by 70% — 15-minute call?
+
+Dear CEO,
+
+Many companies tell us regulatory reviews are a constant drag on launches and team capacity. ComplAI automates compliance checks and produces audit-ready reports so teams move faster with less risk. Our customers typically see up to a 70% reduction in review time and a 40% cut in compliance overhead within the first quarter.
+
+If you’re open to a quick, non-technical conversation, I can show a 5-minute demo and a tailored ROI estimate. Are you available for a 15-minute call next week (Tue or Wed)?
+
+Sincerely,
+Alice
+ComplAI
+
