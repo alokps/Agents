@@ -1,0 +1,92 @@
+Testing LangGraph Chatbot with SQLite Checkpointing
+
+User: What is the weather in San Francisco?
+Assistant: Right now in San Francisco it’s about 50°F (10°C). 
+
+Would you like current conditions (clear/cloudy/rain), wind, humidity, or a short-term/7-day forecast?
+
+User: Can you send me a notification?
+Assistant: Yes — I can. What would you like the notification to say, and should I send it now or at a specific time? 
+
+Examples you can pick or edit:
+- "Current SF temperature: 50°F. Dress warmly!"
+- "Reminder: Check weather before you leave — 50°F in San Francisco."
+- "Heads up: Light rain expected in the next hour."
+
+Also tell me if you want any urgency (silent/urgent) or additional details (link, forecast).
+
+State History:
+================================================================================
+
+State 1:
+  Checkpoint ID: 1f0fa1bd-5b2c-6c9c-8006-f0b9ab47f3ff
+  Messages: 6
+    Message 1 [human]: What is the weather in San Francisco?
+    Message 2 [ai]: 
+    Message 3 [tool]: 50°F
+    Message 4 [ai]: Right now in San Francisco it’s about 50°F (10°C). 
+
+Would you like current conditions (clear/cloudy...
+    Message 5 [human]: Can you send me a notification?
+    Message 6 [ai]: Yes — I can. What would you like the notification to say, and should I send it now or at a specific ...
+--------------------------------------------------------------------------------
+
+State 2:
+  Checkpoint ID: 1f0fa1bd-2285-623f-8005-467f777df589
+  Messages: 5
+    Message 1 [human]: What is the weather in San Francisco?
+    Message 2 [ai]: 
+    Message 3 [tool]: 50°F
+    Message 4 [ai]: Right now in San Francisco it’s about 50°F (10°C). 
+
+Would you like current conditions (clear/cloudy...
+    Message 5 [human]: Can you send me a notification?
+--------------------------------------------------------------------------------
+
+State 3:
+  Checkpoint ID: 1f0fa1bd-2281-63fd-8004-af6332413537
+  Messages: 4
+    Message 1 [human]: What is the weather in San Francisco?
+    Message 2 [ai]: 
+    Message 3 [tool]: 50°F
+    Message 4 [ai]: Right now in San Francisco it’s about 50°F (10°C). 
+
+Would you like current conditions (clear/cloudy...
+--------------------------------------------------------------------------------
+
+State 4:
+  Checkpoint ID: 1f0fa1bd-2270-6e68-8003-39a9b7708e18
+  Messages: 4
+    Message 1 [human]: What is the weather in San Francisco?
+    Message 2 [ai]: 
+    Message 3 [tool]: 50°F
+    Message 4 [ai]: Right now in San Francisco it’s about 50°F (10°C). 
+
+Would you like current conditions (clear/cloudy...
+--------------------------------------------------------------------------------
+
+State 5:
+  Checkpoint ID: 1f0fa1bc-f86d-659f-8002-a49a4c5c9835
+  Messages: 3
+    Message 1 [human]: What is the weather in San Francisco?
+    Message 2 [ai]: 
+    Message 3 [tool]: 50°F
+--------------------------------------------------------------------------------
+
+State 6:
+  Checkpoint ID: 1f0fa1bc-d725-61ad-8001-7d82ab202874
+  Messages: 2
+    Message 1 [human]: What is the weather in San Francisco?
+    Message 2 [ai]: 
+--------------------------------------------------------------------------------
+
+State 7:
+  Checkpoint ID: 1f0fa1bc-b34f-6daf-8000-0b2555b4ffb3
+  Messages: 1
+    Message 1 [human]: What is the weather in San Francisco?
+--------------------------------------------------------------------------------
+
+State 8:
+  Checkpoint ID: 1f0fa1bc-b34c-6c74-bfff-2e1144fb486e
+  Messages: 0
+--------------------------------------------------------------------------------

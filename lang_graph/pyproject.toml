@@ -11,8 +11,10 @@ dependencies = [
     "gradio>=6.3.0",
     "ipython>=9.9.0",
     "langchain>=1.2.6",
+    "langchain-community>=0.4.1",
     "langchain-openai>=1.1.7",
     "langgraph>=1.0.6",
+    "langgraph-checkpoint-sqlite>=3.0.3",
     "pylint>=4.0.4",
     "ruff>=0.14.14",
 ]
