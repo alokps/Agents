@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
     # Open output file for writing
     output_file = os.path.join(output_dir, "chatbot_output.txt")
-    with open(output_file, "w") as f:
+    with open(output_file, "w", encoding='utf-8') as f:
         f.write("Testing LangGraph Chatbot with SQLite Checkpointing\n\n")
 
         # Test message 1
@@ -134,10 +134,18 @@ if __name__ == "__main__":
         f.write(f"Assistant: {result['messages'][-1].content}\n\n")
 
         # Test message 2
-        user_input2 = "Can you send me a notification?"
+        user_input2 = "Can you send me a notification with the current weather in jacksonville, Florida?"
         f.write(f"User: {user_input2}\n")
         result = graph.invoke(
             {"messages": [{"role": "user", "content": user_input2}]}, config=config
+        )
+        f.write(f"Assistant: {result['messages'][-1].content}\n\n")
+        
+        # Test message 3
+        user_input3 = "Can you resend me the notification again?"
+        f.write(f"User: {user_input3}\n")
+        result = graph.invoke(
+            {"messages": [{"role": "user", "content": user_input3}]}, config=config
         )
         f.write(f"Assistant: {result['messages'][-1].content}\n\n")
 

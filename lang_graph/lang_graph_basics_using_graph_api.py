@@ -61,16 +61,12 @@ tools_by_name = {tool.name: tool for tool in tools}
 model_with_tools = model.bind_tools(tools)
 
 # Step 2: Define state
-
-
 class MessagesState(TypedDict):
     messages: Annotated[list[AnyMessage], operator.add]
     llm_calls: int
 
 
 # Step 3: Define model node
-
-
 def llm_call(state: dict):
     """LLM decides whether to call a tool or not"""
 
@@ -90,8 +86,6 @@ def llm_call(state: dict):
 
 
 # Step 4: Define tool node
-
-
 def tool_node(state: dict):
     """Performs the tool call"""
 

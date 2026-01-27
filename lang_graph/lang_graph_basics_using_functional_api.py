@@ -63,8 +63,6 @@ model_with_tools = model.bind_tools(tools)
 
 
 # Step 2: Define model node
-
-
 @task
 def call_llm(messages: list[BaseMessage]):
     """LLM decides whether to call a tool or not"""
@@ -79,8 +77,6 @@ def call_llm(messages: list[BaseMessage]):
 
 
 # Step 3: Define tool node
-
-
 @task
 def call_tool(tool_call: ToolCall):
     """Performs the tool call"""
@@ -89,8 +85,6 @@ def call_tool(tool_call: ToolCall):
 
 
 # Step 4: Define agent
-
-
 @entrypoint()
 def agent(messages: list[BaseMessage]):
     model_response = call_llm(messages).result()
